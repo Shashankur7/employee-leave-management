@@ -4,22 +4,10 @@ A Spring Boot REST API for managing employees and employee leave requests, with 
 
 ## Overview
 
-This project demonstrates a layered Java backend architecture suitable for an internal HR leave-management workflow.
+This project demonstrates a layered Java backend architecture for an internal HR leave-management workflow.
 
 ```text
-Client
-  |
-  v
-REST Controllers
-  |
-  v
-Service Layer
-  |
-  v
-Spring Data JPA
-  |
-  v
-MySQL
+Client -> REST Controllers -> Service Layer -> Spring Data JPA -> MySQL
 ```
 
 ## Features
@@ -33,7 +21,7 @@ MySQL
 - HTTP Basic authentication for development
 - `ADMIN` and `EMPLOYEE` roles
 - BCrypt password encoding
-- JUnit + Mockito service-layer tests
+- JUnit 5 + Mockito service-layer tests
 
 ## Technology Stack
 
@@ -67,59 +55,24 @@ MySQL
 | POST | `/api/leaves` | ADMIN / EMPLOYEE | Create leave request |
 | GET | `/api/leaves` | ADMIN / EMPLOYEE | List leave requests |
 | GET | `/api/leaves/{id}` | ADMIN / EMPLOYEE | Get leave request |
-| GET | `/api/leaves/employee/{employeeId}` | ADMIN / EMPLOYEE | List an employee's leave requests |
+| GET | `/api/leaves/employee/{employeeId}` | ADMIN / EMPLOYEE | List employee leave requests |
 | PATCH | `/api/admin/leaves/{id}/status?status=APPROVED` | ADMIN | Approve or reject a leave request |
 
 ## Local Setup
 
-### Prerequisites
+1. Install Java 17, Maven, and MySQL 8+.
+2. Create a database named `employee_leave_db`.
+3. Copy `src/main/resources/application.properties.example` to `application.properties`.
+4. Set local MySQL and development-only authentication credentials.
+5. Run `mvn spring-boot:run`.
 
-- Java 17
-- Maven
-- MySQL 8+
-
-### 1. Create the database
-
-```sql
-CREATE DATABASE employee_leave_db;
-```
-
-### 2. Configure the application
-
-Copy:
-
-```text
-src/main/resources/application.properties.example
-```
-
-to:
-
-```text
-src/main/resources/application.properties
-```
-
-Set your local MySQL credentials and development-only Basic Auth credentials. `application.properties` is ignored by Git and must not be committed.
-
-### 3. Run
-
-```bash
-mvn spring-boot:run
-```
-
-The API runs on `http://localhost:8080` by default.
+The API runs on port `8080` by default.
 
 ## Authentication
 
-The project currently uses development-only in-memory users configured through environment/local properties.
-
-- `ADMIN` — can access employee/leave APIs and update leave status
-- `EMPLOYEE` — can access employee/leave APIs but cannot update leave status
-
-Use the credentials configured in your local `application.properties`. Never use real passwords in source control.
+Development-only in-memory users are configured through local properties. `ADMIN` can update leave status; `EMPLOYEE` cannot. Never commit real passwords or database credentials.
 
 ## Testing
-
-Run the automated tests with:
 
 ```bash
 mvn test
@@ -131,24 +84,16 @@ Current tests cover leave-request status initialization and invalid date-range v
 
 ```text
 src/
-├── main/
-│   ├── java/com/shashank/leave/
-│   │   ├── config/
-│   │   ├── controller/
-│   │   ├── dto/
-│   │   ├── entity/
-│   │   ├── exception/
-│   │   ├── repository/
-│   │   └── service/
-│   └── resources/
-│       └── application.properties.example
-└── test/
-    └── java/com/shashank/leave/service/
+├── main/java/com/shashank/leave/
+│   ├── config/
+│   ├── controller/
+│   ├── dto/
+│   ├── entity/
+│   ├── exception/
+│   ├── repository/
+│   └── service/
+└── test/java/com/shashank/leave/service/
 ```
-
-## Engineering Focus
-
-This project is being developed incrementally to demonstrate practical backend engineering concepts: REST API design, layered architecture, persistence, validation, security, exception handling, and automated testing.
 
 ## Future Improvements
 
@@ -163,6 +108,6 @@ This project is being developed incrementally to demonstrate practical backend e
 
 **Shashank Bhoyar** — Java Full Stack Developer | B.Tech Information Technology
 
-- GitHub: https://github.com/Shashankur7
-- LinkedIn: https://www.linkedin.com/in/shashank-bhoyar/
-- Email: bhoyarshashank4@gmail.com
+GitHub: https://github.com/Shashankur7
+LinkedIn: https://www.linkedin.com/in/shashank-bhoyar/
+Email: bhoyarshashank4@gmail.com
